@@ -49,7 +49,7 @@ const App = () => {
           />
           <FontAwesomeIcon
             icon={faPlus}
-            onChange={() => handleAddButtonClick()}
+            onClick={() => handleAddButtonClick()}
           />
         </div>
         <div className="item-list">
