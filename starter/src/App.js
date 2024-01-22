@@ -12,6 +12,12 @@ import {
 const App = () => {
   const [items, setItems] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [totalItemCount, setTotalItemCount] = useState(0);
+
+  useEffect(() => {
+    // コンポーネントがマウントされたとき、および items が変更されたときに実行
+    calculateTotal();
+  }, [items]); // items が変更されたときに実行するように指定
 
   //クリック時にitems配列に新しいitemを作る
   const handleAddButtonClick = () => {
@@ -22,8 +28,13 @@ const App = () => {
     };
     //items配列にpush
     const newItems = [...items, newItem];
+    console.log("New Items:", newItems); // 新しい items を確認
+
+    //カウント
+    calculateTotal(newItems);
     //useStateのitemsに反映
     setItems(newItems);
+
     //入力値を空に
     setInputValue("");
   };
@@ -43,7 +54,7 @@ const App = () => {
     const newItems = [...items];
     //quantityを増やす
     newItems[index].quantity++;
-    setItems(newItems);
+    calculateTotal();
   };
   //itemsが増える際の処理
   const handleQuantityDecrease = (index) => {
@@ -51,7 +62,15 @@ const App = () => {
     const newItems = [...items];
     //quantityを増やす
     newItems[index].quantity--;
-    setItems(newItems);
+    calculateTotal();
+  };
+  //アイテムの総量計算
+  const calculateTotal = () => {
+    console.log(items);
+    const totalItemCount = items.reduce((total, item) => {
+      return total + item.quantity;
+    }, 0);
+    setTotalItemCount(totalItemCount);
   };
 
   return (
@@ -103,7 +122,7 @@ const App = () => {
             </div>
           ))}
         </div>
-        <div className="total">Total: </div>
+        <div className="total">Total: {totalItemCount}</div>
       </div>
     </div>
   );
