@@ -14,9 +14,24 @@ const App = () => {
   const [inputValue, setInputValue] = useState("");
   const [totalItemCount, setTotalItemCount] = useState(0);
 
+  //初期化時にLocalStorageのタスクを取り出す
+  useEffect(() => {
+    const data = localStorage.getItem("storage");
+    if (data !== null) {
+      //JSON.parseでJSONからオブジェクトに変換
+      const parsedTaskList = JSON.parse(data);
+      setItems(parsedTaskList);
+    }
+  }, []);
+
   useEffect(() => {
     // コンポーネントがマウントされたとき、および items が変更されたときに実行
     calculateTotal();
+
+    //localstorage
+    //JSON.stringifyでオブジェクトからJSON(文字列)に変換
+    const stringifiedItem = JSON.stringify(items);
+    localStorage.setItem("storage", stringifiedItem);
   }, [items]); // items が変更されたときに実行するように指定
 
   //クリック時にitems配列に新しいitemを作る
